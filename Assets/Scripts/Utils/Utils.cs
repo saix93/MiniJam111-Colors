@@ -6,7 +6,17 @@ using Random = UnityEngine.Random;
 
 public static class Utils
 {
+    public static void SortByDistance<T>(this List<T> list, Vector3 point, bool closestFirst = true) where T : Component
+    {
+        list.Sort((a, b) =>
+        {
+            var distA = Vector3.Distance(a.transform.position, point);
+            var distB = Vector3.Distance(b.transform.position, point);
 
+            if (distA <= distB) return closestFirst ? -1 : 1;
+            return closestFirst ? 1 : -1;
+        });
+    }
 }
 
 [Serializable]

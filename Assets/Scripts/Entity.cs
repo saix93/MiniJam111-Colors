@@ -17,16 +17,21 @@ public class Entity : MonoBehaviour
     public float ShootingCooldown = .25f;
     public string BulletLayer;
 
+    private bool alive = true;
     private float currentShootingCooldown = -9999f;
     private Health health;
+    protected Rigidbody2D rb;
     protected GameColor currentColor;
 
+    public bool Alive => alive;
     public GameColor CurrentColor => currentColor;
     public Health Health => health;
+    public Rigidbody2D Rigidbody => rb;
 
     protected virtual void Awake()
     {
         health = GetComponent<Health>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     protected virtual void Start()
@@ -34,7 +39,12 @@ public class Entity : MonoBehaviour
 
     }
 
-    public void Shoot()
+    public void Respawn()
+    {
+        alive = true;
+    }
+
+    public virtual void Shoot()
     {
         if (currentShootingCooldown >= Time.time) return;
 
@@ -48,7 +58,7 @@ public class Entity : MonoBehaviour
         currentShootingCooldown = Time.time + ShootingCooldown;
     }
 
-    public virtual void SwapColor(int newColor)
+    public void SwapColor(int newColor)
     {
         currentColor = GameManager.GameColors.Colors[newColor];
 
@@ -59,6 +69,6 @@ public class Entity : MonoBehaviour
     public virtual void Die()
     {
         // Animación en la que muere el pj
-
+        alive = false;
     }
 }

@@ -6,6 +6,11 @@ using UnityEngine;
 public class SO_GameColors : ScriptableObject
 {
     public List<GameColor> Colors;
+
+    public int GetColorIndex(GameColor color)
+    {
+        return Colors.IndexOf(color);
+    }
 }
 
 [System.Serializable]

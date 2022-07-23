@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         var targetEntity = collision.transform.GetComponent<Entity>();
-        if (targetEntity) targetEntity.Health.GetHit(currentColor, entity);
+        if (targetEntity) targetEntity.Health.GetHit(currentColor, entity, transform.position);
 
         gameObject.SetActive(false);
         rb.velocity = Vector2.zero;

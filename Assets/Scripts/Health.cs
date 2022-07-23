@@ -7,6 +7,7 @@ public class Health : MonoBehaviour
     [Header("Properties")]
     public int MaxHealth;
     public bool CheckAttackColor = true;
+    public bool Invulnerable = false;
 
     private int currentHealth;
     private Entity entity;
@@ -23,9 +24,19 @@ public class Health : MonoBehaviour
         currentHealth = MaxHealth;
     }
 
-    public void GetHit(GameColor color, Entity attacker)
+    public void GetHit(GameColor color, Entity attacker, Vector2 bulletPos)
     {
-        if (CheckAttackColor && entity.CurrentColor != color) return;
+        if (!entity.Alive || Invulnerable) return;
+
+        if (CheckAttackColor && entity.CurrentColor != color)
+        {
+            if (entity is EnemyController)
+            {
+                (entity as EnemyController).EnemyBehaviour.Knockback(bulletPos);
+            }
+
+            return;
+        }
 
         currentHealth -= color.Damage;
 
@@ -40,6 +51,8 @@ public class Health : MonoBehaviour
         if (entity is PlayerController)
         {
             GameManager.ControlEntity(attacker);
+
+            // TODO: Incrementar puntuación del player
         }
 
         entity.Die();

@@ -1,11 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : Entity
 {
-    [Header("EnemyController")]
-    public int asd;
+    [Header("Properties")]
+    public LayerMask LayerMask;
+
+    private EnemyBehaviour enemyBehaviour;
+
+    public EnemyBehaviour EnemyBehaviour => enemyBehaviour;
+
+    private Vector2 vectorToPlayer => GameManager.Player.transform.position - transform.position;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        enemyBehaviour = GetComponent<EnemyBehaviour>();
+    }
 
     protected override void Start()
     {
@@ -15,42 +29,48 @@ public class EnemyController : Entity
     private void Init()
     {
         gameObject.SetActive(true);
+        Respawn();
 
         var rnd = Random.Range(0, GameManager.GameColors.Colors.Count);
         SwapColor(rnd);
 
-        StartCoroutine(ShootCR());
+        // StartCoroutine(ShootCR());
     }
 
     private void Update()
     {
         Aim();
+
+        if (enemyBehaviour.ShouldShoot) Shoot();
     }
 
     public void Spawn(Vector2 position)
     {
         transform.position = position;
-        Health.Init();
         Init();
+        Health.Init();
+        enemyBehaviour.Init();
     }
 
-    private IEnumerator ShootCR()
+    public override void Shoot()
     {
-        while(true)
-        {
-            yield return new WaitForSeconds(2.5f);
+        var hit = Physics2D.Raycast(transform.position, vectorToPlayer.normalized, vectorToPlayer.magnitude, LayerMask);
 
-            Shoot();
-        }
+        if (hit) return;
+
+        base.Shoot();
     }
 
     private void Aim()
     {
-        if (!GameManager.Player) return;
+        var dir = vectorToPlayer.normalized;
 
-        var dir = (GameManager.Player.transform.position - transform.position).normalized;
+        if (enemyBehaviour.CurrentBehaviour == AgentBehaviour.Searching)
+        {
+            dir = enemyBehaviour.MovingDirection;
+        }
 
-        Weapon.position = transform.position + dir * WeaponDistance;
+        Weapon.position = (Vector2)transform.position + dir * WeaponDistance;
 
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         Weapon.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -60,6 +80,7 @@ public class EnemyController : Entity
     {
         base.Die();
 
+        StopAllCoroutines();
         gameObject.SetActive(false);
     }
 }

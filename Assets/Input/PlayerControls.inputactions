@@ -33,42 +33,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SwapTo0",
-                    "type": "Button",
-                    "id": "46955fd7-08b1-4e3f-933d-e729406f32fc",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SwapTo1",
-                    "type": "Button",
-                    "id": "a73b5711-6084-4506-b5f9-b8d51a512712",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SwapTo2",
-                    "type": "Button",
-                    "id": "7df2aa1e-e151-4851-beaa-809c877dbd13",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SwapTo3",
-                    "type": "Button",
-                    "id": "4ae7a9ea-4b87-43d9-bc69-56e63e050875",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Reset",
                     "type": "Button",
                     "id": "382a858c-0ea7-40d5-8cca-83d79e3985d7",
@@ -252,94 +216,6 @@
                     "processors": "",
                     "groups": "KBM",
                     "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2a7ae56c-67bf-4f2e-9431-60ebf7b6c026",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KBM",
-                    "action": "SwapTo0",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2b3615a9-7bb2-42f7-ae41-00fcace42faf",
-                    "path": "<Gamepad>/dpad/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "SwapTo0",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f63cbe50-59c5-4b78-8146-52f94e49e372",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KBM",
-                    "action": "SwapTo1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a52c1f66-be8d-4cd6-b559-2c7d3b27002d",
-                    "path": "<Gamepad>/dpad/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "SwapTo1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e89d0f25-4e47-47a9-a782-fbbe475962ac",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KBM",
-                    "action": "SwapTo2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7dcefcbb-e22d-41b1-a624-c37d1b2f61f9",
-                    "path": "<Gamepad>/dpad/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "SwapTo2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "743d1e38-5092-4ac6-b7ee-ab3616682a05",
-                    "path": "<Keyboard>/4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KBM",
-                    "action": "SwapTo3",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1925614a-391a-4ede-95dc-37bde7d52bfb",
-                    "path": "<Gamepad>/dpad/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "SwapTo3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -47,43 +47,6 @@ public class PlayerInputManager : MonoBehaviour
         if (shoot) controller.Shoot();
     }
 
-    public void SwapTo0(InputAction.CallbackContext context)
-    {
-        var swap = context.performed;
-
-        if (swap)
-        {
-            controller.SwapColor(0);
-        }
-    }
-    public void SwapTo1(InputAction.CallbackContext context)
-    {
-        var swap = context.performed;
-
-        if (swap)
-        {
-            controller.SwapColor(1);
-        }
-    }
-    public void SwapTo2(InputAction.CallbackContext context)
-    {
-        var swap = context.performed;
-
-        if (swap)
-        {
-            controller.SwapColor(2);
-        }
-    }
-    public void SwapTo3(InputAction.CallbackContext context)
-    {
-        var swap = context.performed;
-
-        if (swap)
-        {
-            controller.SwapColor(3);
-        }
-    }
-
     public void Reset(InputAction.CallbackContext context)
     {
         var reset = context.performed;

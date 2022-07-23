@@ -12,34 +12,26 @@ public class PlayerController : Entity
     public Transform Crosshair;
 
     [Header("Properties")]
-    public float SwapColorCooldown;
     public float MovementSpeed = 3f;
     public float GamepadCrosshairDistance = 2f;
     public float GamepadAimStickDeathzone = .1f;
     public bool NormalizeAimWithGamepad = true;
     public MinMaxFloat MinMaxCrosshairDistanceToCalcOffset = new MinMaxFloat(1f, 10f);
     public MinMaxFloat MinMaxCameraOffset = new MinMaxFloat(1f, 3f);
+    public bool Invisible;
 
     private Camera cam;
-    private Rigidbody2D rb;
     private PlayerInputManager inputManager;
     private Vector2 currentMovement;
     private Vector2 lastAimPos;
     private Vector2 currentAimPos;
-    private float currentSwapColorCooldown = -9999f;
 
     protected override void Awake()
     {
         base.Awake();
 
         cam = Camera.main;
-        rb = GetComponent<Rigidbody2D>();
         inputManager = GetComponent<PlayerInputManager>();
-    }
-
-    protected override void Start()
-    {
-        SwapColor(0);
     }
 
     private void Update()
@@ -95,15 +87,6 @@ public class PlayerController : Entity
     public void UpdateAim(Vector2 position)
     {
         currentAimPos = position;
-    }
-
-    public override void SwapColor(int newColor)
-    {
-        if (currentSwapColorCooldown >= Time.time) return;
-
-        base.SwapColor(newColor);
-
-        currentSwapColorCooldown = Time.time + SwapColorCooldown;
     }
 
     public override void Die()

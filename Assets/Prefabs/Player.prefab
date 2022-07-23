@@ -123,13 +123,12 @@ MonoBehaviour:
   - {fileID: 1587079932684080163}
   - {fileID: 1587079933382035998}
   EntityName: Saix
-  WeaponDistance: 1
+  WeaponDistance: 0.5
   ShootingCooldown: 0.25
   BulletLayer: PlayerBullet
   CameraFollowTarget: {fileID: 1587079932251924955}
   Crosshair: {fileID: 1587079932412044197}
-  SwapColorCooldown: 1
-  MovementSpeed: 5
+  MovementSpeed: 6
   GamepadCrosshairDistance: 3
   GamepadAimStickDeathzone: 0.1
   NormalizeAimWithGamepad: 1
@@ -139,6 +138,7 @@ MonoBehaviour:
   MinMaxCameraOffset:
     Min: 0
     Max: 1.5
+  Invisible: 0
 --- !u!114 &3454581854320607438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 1
   CheckAttackColor: 0
+  Invulnerable: 0
 --- !u!114 &1587079932334642337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,70 +254,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 876fa307-63ea-40aa-858e-e717bc9c9081
     m_ActionName: Gameplay/Shoot[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1587079932334642337}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: SwapTo0
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 46955fd7-08b1-4e3f-933d-e729406f32fc
-    m_ActionName: Gameplay/SwapTo0[/Keyboard/1]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1587079932334642337}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: SwapTo1
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: a73b5711-6084-4506-b5f9-b8d51a512712
-    m_ActionName: Gameplay/SwapTo1[/Keyboard/2]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1587079932334642337}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: SwapTo2
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 7df2aa1e-e151-4851-beaa-809c877dbd13
-    m_ActionName: Gameplay/SwapTo2[/Keyboard/3]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1587079932334642337}
-        m_TargetAssemblyTypeName: PlayerInputManager, Assembly-CSharp
-        m_MethodName: SwapTo3
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 4ae7a9ea-4b87-43d9-bc69-56e63e050875
-    m_ActionName: Gameplay/SwapTo3[/Keyboard/4]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1587079932334642337}
@@ -817,10 +754,10 @@ MonoBehaviour:
   m_ComponentVersion: 1
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 1
+  m_FalloffIntensity: 0.6
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
-  m_LightVolumeIntensity: 0.06
+  m_LightVolumeIntensity: 0.69
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 49d9bb9095b00551cb6fd18400000000
   m_LightCookieSprite: {fileID: 0}

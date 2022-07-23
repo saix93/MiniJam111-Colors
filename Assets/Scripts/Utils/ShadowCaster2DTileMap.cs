@@ -32,13 +32,14 @@ public class ShadowCaster2DTileMap : MonoBehaviour
             tilemapCollider.GetPath(i, pathVertices);
             GameObject shadowCaster = new GameObject("shadow_caster_" + i);
             shadowCaster.transform.parent = gameObject.transform;
+            shadowCaster.transform.position = CalcCenter(pathVertices);
             UnityEngine.Rendering.Universal.ShadowCaster2D shadowCasterComponent = shadowCaster.AddComponent<UnityEngine.Rendering.Universal.ShadowCaster2D>();
             shadowCasterComponent.selfShadows = this.selfShadows;
 
             Vector3[] testPath = new Vector3[pathVertices.Length];
             for (int j = 0; j < pathVertices.Length; j++)
             {
-                testPath[j] = pathVertices[j];
+                testPath[j] = pathVertices[j] - (Vector2)shadowCaster.transform.position;
             }
 
             shapePathField.SetValue(shadowCasterComponent, testPath);
@@ -60,4 +61,21 @@ public class ShadowCaster2DTileMap : MonoBehaviour
 
     }
 
+    private Vector2 CalcCenter(Vector2[] pathVertices)
+    {
+        float minX = Mathf.Infinity;
+        float minY = Mathf.Infinity;
+        float maxX = -Mathf.Infinity;
+        float maxY = -Mathf.Infinity;
+
+        foreach (var v in pathVertices)
+        {
+            if (v.x < minX) minX = v.x;
+            if (v.x > maxX) maxX = v.x;
+            if (v.y < minY) minY = v.y;
+            if (v.y > maxY) maxY = v.y;
+        }
+
+        return new Vector2((minX + maxX) / 2, (minY + maxY) / 2);
+    }
 }

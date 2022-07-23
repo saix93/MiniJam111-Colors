@@ -43,8 +43,10 @@ GameObject:
   - component: {fileID: 3918653838628560393}
   - component: {fileID: 3918653838628560398}
   - component: {fileID: 3918653838628560399}
+  - component: {fileID: -4985060185896901087}
   - component: {fileID: 1106153429356340580}
   - component: {fileID: 4388682914643261587}
+  - component: {fileID: 390979177}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -85,10 +87,12 @@ MonoBehaviour:
   EntityLights:
   - {fileID: 3918653840195751984}
   EntityName: 
-  WeaponDistance: 1
-  ShootingCooldown: 0.25
+  WeaponDistance: 0.5
+  ShootingCooldown: 0.5
   BulletLayer: EnemyBullet
-  asd: 0
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 1591
 --- !u!114 &3918653838628560399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,8 +105,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d20f278dfced7e140823172e9ea59ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 0
+  MaxHealth: 1
   CheckAttackColor: 1
+  Invulnerable: 0
+--- !u!114 &-4985060185896901087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918653838628560396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 191e8998f9ea864418b265aaad9c5093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinMaxSearchTicks:
+    Min: 1.5
+    Max: 3
+  MinMaxWalkDistance:
+    Min: 4
+    Max: 10
+  SearchDistance: 20
+  RecursiveRaycastDistance: 5
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 1719
 --- !u!50 &1106153429356340580
 Rigidbody2D:
   serializedVersion: 4
@@ -111,7 +139,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3918653838628560396}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -140,6 +168,28 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!195 &390979177
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918653838628560396}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 2.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &3918653838742084332
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,7 +273,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.25
   m_LightVolumeIntensity: 0.06
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 49d9bb9095b00551cb6fd18400000000
@@ -234,7 +284,7 @@ MonoBehaviour:
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
-  m_ShadowIntensityEnabled: 1
+  m_ShadowIntensityEnabled: 0
   m_ShadowIntensity: 0.4
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 1
@@ -378,6 +428,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5796904560119831051}
   - component: {fileID: 2703726656366339974}
+  - component: {fileID: 6151033724726516666}
   m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
@@ -452,3 +503,30 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6151033724726516666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6720154130137196599}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 49d9bb9095b00551cb6fd18400000000
+  m_ShapePath:
+  - {x: -1.333334, y: -0.1875, z: 0}
+  - {x: -1.333334, y: 0.1875, z: 0}
+  - {x: 1.333333, y: 0.1875, z: 0}
+  - {x: 1.333333, y: -0.1875, z: 0}
+  m_ShapePathHash: 0
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 104410
