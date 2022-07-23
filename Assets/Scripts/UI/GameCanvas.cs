@@ -7,9 +7,4 @@ public class GameCanvas : MonoBehaviour
 {
     [Header("References")]
     public Image Crosshair;
-
-    public void UpdateCrosshairPosition(Vector2 newPosition)
-    {
-        // Crosshair.transform.position = newPosition;
-    }
 }

@@ -13,23 +13,32 @@ public class Bullet : MonoBehaviour
     public float Speed;
 
     private Rigidbody2D rb;
+    private GameColor currentColor;
+    private Entity entity;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void Launch(GameColor gc)
+    public void Launch(Entity attacker)
     {
+        entity = attacker;
+        currentColor = entity.CurrentColor;
+
         gameObject.SetActive(true);
-        Renderer.color = gc.Color;
-        Light.color = gc.Color;
+        Renderer.color = currentColor.Color;
+        Light.color = currentColor.Color;
 
         rb.AddForce(transform.right * Speed, ForceMode2D.Impulse);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        var targetEntity = collision.transform.GetComponent<Entity>();
+        if (targetEntity) targetEntity.Health.GetHit(currentColor, entity);
+
         gameObject.SetActive(false);
+        rb.velocity = Vector2.zero;
     }
 }

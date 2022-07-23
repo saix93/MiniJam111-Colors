@@ -15,9 +15,13 @@ MonoBehaviour:
   Colors:
   - Name: Red
     Color: {r: 1, g: 0.3820755, b: 0.3820755, a: 1}
+    Damage: 1
   - Name: Green
     Color: {r: 0.61154276, g: 1, b: 0.504717, a: 1}
+    Damage: 1
   - Name: Blue
     Color: {r: 0.4009434, g: 0.7503866, b: 1, a: 1}
+    Damage: 1
   - Name: Yellow
     Color: {r: 0.9790973, g: 1, b: 0.4669811, a: 1}
+    Damage: 1

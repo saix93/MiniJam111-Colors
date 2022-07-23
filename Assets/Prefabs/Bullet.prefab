@@ -170,7 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderer: {fileID: 4291280142046949787}
   Light: {fileID: 4291280143267622201}
-  Speed: 5
+  Speed: 8
 --- !u!1 &4291280143138844907
 GameObject:
   m_ObjectHideFlags: 0

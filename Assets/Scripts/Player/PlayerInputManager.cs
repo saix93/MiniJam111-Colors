@@ -10,9 +10,8 @@ public class PlayerInputManager : MonoBehaviour
     public string KBMControlScheme = "KBM";
 
     private PlayerController controller;
-    private string currentControlScheme;
 
-    public bool UsingGamepad => currentControlScheme.Equals(GamepadControlScheme);
+    public bool UsingGamepad => GameManager.CurrentControlScheme.Equals(GamepadControlScheme);
 
     private void Awake()
     {
@@ -21,8 +20,10 @@ public class PlayerInputManager : MonoBehaviour
 
     public void OnControlsChanged(PlayerInput input)
     {
-        Debug.Log($"Input changed from {currentControlScheme} to {input.currentControlScheme}");
-        currentControlScheme = input.currentControlScheme;
+        if (input.currentControlScheme == null) return;
+
+        Debug.Log($"Input changed from {GameManager.CurrentControlScheme} to {input.currentControlScheme}");
+        GameManager.CurrentControlScheme = input.currentControlScheme;
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -80,6 +81,16 @@ public class PlayerInputManager : MonoBehaviour
         if (swap)
         {
             controller.SwapColor(3);
+        }
+    }
+
+    public void Reset(InputAction.CallbackContext context)
+    {
+        var reset = context.performed;
+
+        if (reset)
+        {
+            GameManager.ResetGame();
         }
     }
 }

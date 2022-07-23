@@ -13,4 +13,5 @@ public class GameColor
 {
     public string Name;
     public Color Color;
+    public int Damage;
 }

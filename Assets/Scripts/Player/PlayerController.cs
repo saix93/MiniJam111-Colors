@@ -4,21 +4,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Entity
 {
+    [Header("PlayerController")]
     [Header("References")]
-    public List<Light2D> PlayerLights;
-    public SpriteRenderer Renderer;
     public Transform CameraFollowTarget;
     public Transform Crosshair;
-    public Transform Weapon;
 
     [Header("Properties")]
-    public string PlayerName;
-    public SO_GameColors PlayerColors;
     public float SwapColorCooldown;
-    public float ShootingCooldown = .25f;
-    public float WeaponDistance = 1f;
     public float MovementSpeed = 3f;
     public float GamepadCrosshairDistance = 2f;
     public float GamepadAimStickDeathzone = .1f;
@@ -32,18 +26,18 @@ public class PlayerController : MonoBehaviour
     private Vector2 currentMovement;
     private Vector2 lastAimPos;
     private Vector2 currentAimPos;
-    private GameColor currentColor;
     private float currentSwapColorCooldown = -9999f;
-    private float currentShootingCooldown = -9999f;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         cam = Camera.main;
         rb = GetComponent<Rigidbody2D>();
         inputManager = GetComponent<PlayerInputManager>();
     }
 
-    private void Start()
+    protected override void Start()
     {
         SwapColor(0);
     }
@@ -102,28 +96,20 @@ public class PlayerController : MonoBehaviour
     {
         currentAimPos = position;
     }
-    public void Shoot()
-    {
-        if (currentShootingCooldown >= Time.time) return;
 
-        var bullet = GameManager.GetBullet();
-        bullet.transform.position = Weapon.position;
-        bullet.transform.rotation = Weapon.rotation;
-
-        bullet.Launch(currentColor);
-
-        currentShootingCooldown = Time.time + ShootingCooldown;
-    }
-
-    public void SwapColor(int newColor)
+    public override void SwapColor(int newColor)
     {
         if (currentSwapColorCooldown >= Time.time) return;
 
-        currentColor = PlayerColors.Colors[newColor];
-
-        PlayerLights.ForEach(l => l.color = currentColor.Color);
-        Renderer.color = currentColor.Color;
+        base.SwapColor(newColor);
 
         currentSwapColorCooldown = Time.time + SwapColorCooldown;
+    }
+
+    public override void Die()
+    {
+        base.Die();
+
+        Destroy(gameObject);
     }
 }

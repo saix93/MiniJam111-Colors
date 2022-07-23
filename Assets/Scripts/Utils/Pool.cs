@@ -8,6 +8,8 @@ public class Pool<T> where T : MonoBehaviour
     private T prefab;
     private Transform parent;
 
+    public int ActiveItems => objects.FindAll(o => o.gameObject.activeSelf).Count;
+
     public Pool(T newPrefab, int initialPrefabs, Transform newParent)
     {
         objects = new List<T>();
