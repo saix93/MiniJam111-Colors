@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyController : Entity
 {
     [Header("Properties")]
+    public float MaxDistanceToShootPlayer = 15f;
     public LayerMask LayerMask;
 
     private EnemyBehaviour enemyBehaviour;
@@ -41,7 +42,7 @@ public class EnemyController : Entity
     {
         Aim();
 
-        if (enemyBehaviour.ShouldShoot) Shoot();
+        if (GameManager.PlayerAlive && enemyBehaviour.ShouldShoot) Shoot();
     }
 
     public void Spawn(Vector2 position)
@@ -56,14 +57,14 @@ public class EnemyController : Entity
     {
         var hit = Physics2D.Raycast(transform.position, vectorToPlayer.normalized, vectorToPlayer.magnitude, LayerMask);
 
-        if (hit) return;
+        if (hit || vectorToPlayer.magnitude > MaxDistanceToShootPlayer) return;
 
         base.Shoot();
     }
 
     private void Aim()
     {
-        var dir = vectorToPlayer.normalized;
+        var dir = GameManager.PlayerAlive ? vectorToPlayer.normalized : Vector2.zero;
 
         if (enemyBehaviour.CurrentBehaviour == AgentBehaviour.Searching)
         {

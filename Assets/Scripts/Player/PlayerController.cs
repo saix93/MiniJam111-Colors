@@ -10,6 +10,7 @@ public class PlayerController : Entity
     [Header("References")]
     public Transform CameraFollowTarget;
     public Transform Crosshair;
+    public Transform Visual;
 
     [Header("Properties")]
     public float MovementSpeed = 3f;
@@ -25,6 +26,8 @@ public class PlayerController : Entity
     private Vector2 currentMovement;
     private Vector2 lastAimPos;
     private Vector2 currentAimPos;
+
+    public PlayerInputManager Input => inputManager;
 
     protected override void Awake()
     {
@@ -43,6 +46,13 @@ public class PlayerController : Entity
     private void FixedUpdate()
     {
         Move();
+    }
+
+    public override void Respawn()
+    {
+        base.Respawn();
+
+        Visual.gameObject.SetActive(true);
     }
 
     private void Move()
@@ -93,6 +103,6 @@ public class PlayerController : Entity
     {
         base.Die();
 
-        Destroy(gameObject);
+        Visual.gameObject.SetActive(false);
     }
 }

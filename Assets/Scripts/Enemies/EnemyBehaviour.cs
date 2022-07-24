@@ -10,6 +10,7 @@ public class EnemyBehaviour : MonoBehaviour
     public MinMaxFloat MinMaxWalkDistance = new MinMaxFloat(4f, 10f);
     public float SearchDistance = 10f;
     public float RecursiveRaycastDistance = 5f;
+    public float TimeToStartFollowingPlayer = 2f;
     public float KnockbackTime = 1f;
     public float KnockbackForce = .5f;
     public LayerMask LayerMask;
@@ -17,10 +18,12 @@ public class EnemyBehaviour : MonoBehaviour
     private NavMeshAgent agent;
     private EnemyController controller;
     private AgentBehaviour currentBeheaviour;
+    private bool playerSeen;
     private bool shouldShoot;
     private Vector3 currentMovingDirection;
     private Vector3 lastFramePosition;
     private bool beingKnockedback;
+    private bool shouldMove = true;
 
     public AgentBehaviour CurrentBehaviour => currentBeheaviour;
     public bool ShouldShoot => shouldShoot;
@@ -37,29 +40,36 @@ public class EnemyBehaviour : MonoBehaviour
         StopAllCoroutines();
 
         currentBeheaviour = AgentBehaviour.Searching;
+        playerSeen = false;
         shouldShoot = false;
+        shouldMove = true;
 
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-        agent.isStopped = false;
+        if (agent.isOnNavMesh) agent.isStopped = false;
 
         beingKnockedback = false;
         controller.Rigidbody.isKinematic = true;
         controller.Rigidbody.velocity = Vector2.zero;
 
-        StartCoroutine(BehaviourCR());
+        if (gameObject.activeSelf) StartCoroutine(BehaviourCR());
     }
 
     private void Update()
     {
-        switch (currentBeheaviour)
+        if (!shouldMove) return;
+
+        if (GameManager.PlayerAlive)
         {
-            case AgentBehaviour.Searching:
-                SearchForPlayer();
-                break;
-            case AgentBehaviour.Following:
-                FollowPlayer();
-                break;
+            switch (currentBeheaviour)
+            {
+                case AgentBehaviour.Searching:
+                    SearchForPlayer();
+                    break;
+                case AgentBehaviour.Following:
+                    FollowPlayer();
+                    break;
+            }
         }
 
         currentMovingDirection = (transform.position - lastFramePosition).normalized;
@@ -74,6 +84,7 @@ public class EnemyBehaviour : MonoBehaviour
     private IEnumerator KnockbackCR(Vector2 bulletPos)
     {
         beingKnockedback = true;
+        shouldShoot = false;
         agent.isStopped = true;
         controller.Rigidbody.isKinematic = false;
         controller.Rigidbody.AddForce(((Vector2)transform.position - bulletPos).normalized * KnockbackForce);
@@ -81,6 +92,7 @@ public class EnemyBehaviour : MonoBehaviour
         yield return new WaitForSeconds(KnockbackTime);
 
         beingKnockedback = false;
+        shouldShoot = true;
         controller.Rigidbody.isKinematic = true;
         controller.Rigidbody.velocity = Vector2.zero;
         agent.isStopped = false;
@@ -88,7 +100,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private IEnumerator BehaviourCR()
     {
-        while (currentBeheaviour == AgentBehaviour.Searching)
+        while (currentBeheaviour == AgentBehaviour.Searching && !playerSeen)
         {
             var walkDistance = MinMaxWalkDistance.random;
             var randomDirection = GetRandomDirectionRecursive(walkDistance, 5);
@@ -118,16 +130,22 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void SearchForPlayer()
     {
-        if (GameManager.Player.Invisible) return;
+        if (GameManager.Player.Invisible || playerSeen) return;
 
         var pTransform = GameManager.Player.transform;
         var hit = Physics2D.Raycast(transform.position, pTransform.position - transform.position, SearchDistance, LayerMask);
 
         if (hit && hit.transform == pTransform)
         {
-            currentBeheaviour = AgentBehaviour.Following;
-            shouldShoot = true;
+            playerSeen = true;
+            Invoke("StartFollowingPlayer", TimeToStartFollowingPlayer);
         }
+    }
+
+    private void StartFollowingPlayer()
+    {
+        currentBeheaviour = AgentBehaviour.Following;
+        shouldShoot = true;
     }
 
     private void FollowPlayer()
@@ -140,6 +158,14 @@ public class EnemyBehaviour : MonoBehaviour
     private void MoveToPosition(Vector3 newPosition)
     {
         agent.SetDestination(newPosition);
+    }
+
+    public void StopMovement()
+    {
+        agent.isStopped = true;
+        shouldMove = false;
+
+        StopAllCoroutines();
     }
 }
 

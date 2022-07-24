@@ -86,10 +86,11 @@ MonoBehaviour:
   Weapon: {fileID: 9054474539463397783}
   EntityLights:
   - {fileID: 3918653840195751984}
-  EntityName: 
+  EntityName: Enemy
   WeaponDistance: 0.5
   ShootingCooldown: 0.5
   BulletLayer: EnemyBullet
+  MaxDistanceToShootPlayer: 15
   LayerMask:
     serializedVersion: 2
     m_Bits: 1591
@@ -128,6 +129,9 @@ MonoBehaviour:
     Max: 10
   SearchDistance: 20
   RecursiveRaycastDistance: 5
+  TimeToStartFollowingPlayer: 2
+  KnockbackTime: 1
+  KnockbackForce: 0.5
   LayerMask:
     serializedVersion: 2
     m_Bits: 1719
@@ -273,7 +277,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.25
+  m_Intensity: 0.5
   m_LightVolumeIntensity: 0.06
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 49d9bb9095b00551cb6fd18400000000
@@ -428,7 +432,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5796904560119831051}
   - component: {fileID: 2703726656366339974}
-  - component: {fileID: 6151033724726516666}
   m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
@@ -503,30 +506,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6151033724726516666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6720154130137196599}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_ComponentVersion: 1
-  m_HasRenderer: 1
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 0
-  m_ApplyToSortingLayers: 49d9bb9095b00551cb6fd18400000000
-  m_ShapePath:
-  - {x: -1.333334, y: -0.1875, z: 0}
-  - {x: -1.333334, y: 0.1875, z: 0}
-  - {x: 1.333333, y: 0.1875, z: 0}
-  - {x: 1.333333, y: -0.1875, z: 0}
-  m_ShapePathHash: 0
-  m_Mesh: {fileID: 0}
-  m_InstanceId: 104410

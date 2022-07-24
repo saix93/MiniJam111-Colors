@@ -24,6 +24,8 @@ public class PlayerInputManager : MonoBehaviour
 
         Debug.Log($"Input changed from {GameManager.CurrentControlScheme} to {input.currentControlScheme}");
         GameManager.CurrentControlScheme = input.currentControlScheme;
+
+        if (GameManager.HasInstance) GameManager.MainCanvas.UpdateControls();
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -47,13 +49,22 @@ public class PlayerInputManager : MonoBehaviour
         if (shoot) controller.Shoot();
     }
 
-    public void Reset(InputAction.CallbackContext context)
+    public void Reincarnate(InputAction.CallbackContext context)
     {
-        var reset = context.performed;
+        var reincarnate = context.performed;
 
-        if (reset)
+        if (reincarnate)
         {
-            GameManager.ResetGame();
+            GameManager.Reincarnate();
+        }
+    }
+    public void CloseGame(InputAction.CallbackContext context)
+    {
+        var reincarnate = context.performed;
+
+        if (reincarnate)
+        {
+            GameManager.QuitGame();
         }
     }
 }

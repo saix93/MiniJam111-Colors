@@ -51,9 +51,9 @@ public class Health : MonoBehaviour
         if (entity is PlayerController)
         {
             GameManager.ControlEntity(attacker);
-
-            // TODO: Incrementar puntuación del player
         }
+
+        GameManager.UpgradeDifficulty();
 
         entity.Die();
     }

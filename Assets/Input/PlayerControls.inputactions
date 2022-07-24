@@ -33,9 +33,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Reset",
+                    "name": "Reincarnate",
                     "type": "Button",
                     "id": "382a858c-0ea7-40d5-8cca-83d79e3985d7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "QuitGame",
+                    "type": "Button",
+                    "id": "489ee8a2-50b4-45c1-84e8-3b8220cfde51",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -225,8 +234,8 @@
                     "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Reset",
+                    "groups": "KBM",
+                    "action": "Reincarnate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -236,8 +245,30 @@
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Reset",
+                    "groups": "Gamepad",
+                    "action": "Reincarnate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b2e87b9f-59a4-4a20-b39f-fac724d9fc03",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KBM",
+                    "action": "QuitGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1e5b7cb-f302-4b6c-b079-124a0e7487ce",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "QuitGame",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

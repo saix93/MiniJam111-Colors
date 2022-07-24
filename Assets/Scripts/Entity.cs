@@ -39,9 +39,10 @@ public class Entity : MonoBehaviour
 
     }
 
-    public void Respawn()
+    public virtual void Respawn()
     {
         alive = true;
+        health.Init();
     }
 
     public virtual void Shoot()

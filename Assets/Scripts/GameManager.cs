@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.VFX;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,26 +15,36 @@ public class GameManager : MonoBehaviour
     public Bullet BulletPrefab;
     public EnemyController EnemyPrefab;
     public PlayerController PlayerPrefab;
+    public VisualEffect VFX_Absorb;
+    public VisualEffect VFX_Wave;
 
     [Header("Properties")]
-    public bool Debug = true;
-    public int MinNumberOfEnemies = 5;
+    public MinMaxInt MinMaxNumberOfEnemies = new MinMaxInt(5, 99);
     public float TimeBetweenColorChange = 5f;
     public bool ChangeToRandomColor = true;
     public int RandomSpawnPoints = 5;
+    public int DifficultyUpgrade = 1;
 
     private PlayerController player;
     private float nextColorChange = -9999f;
     private int currentColorIndex = -1;
+    private int currentNumberOfEnemies = 0;
+    private int score;
+    private bool reincarnating = false;
 
     private static GameManager _;
     private static Pool<Bullet> bulletPool;
     private static Pool<EnemyController> enemyPool;
 
     public static string CurrentControlScheme;
+    public static GameCanvas MainCanvas => _.GameCanvas;
     public static SO_GameColors GameColors => _.SO_Colors;
     public static PlayerController Player => _.player;
+    public static bool PlayerAlive => Player != null && Player.Alive;
     public static float NextColorChange => _.nextColorChange;
+    public static int Score => _.score;
+    public static bool UsingGamepad => Player.Input.UsingGamepad;
+    public static bool HasInstance => _ != null;
 
     private void Awake()
     {
@@ -51,9 +62,39 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
     }
 
+    private void Start()
+    {
+        score = 0;
+        ResetDifficulty();
+
+        var gradient = new Gradient();
+        var colorKey = new GradientColorKey[SO_Colors.Colors.Count];
+
+        for (int i = 0; i < SO_Colors.Colors.Count; i++)
+        {
+            var color = SO_Colors.Colors[i].Color;
+            var time = 1f / SO_Colors.Colors.Count * (i + 1);
+
+            colorKey[i].color = color;
+            colorKey[i].time = time;
+        }
+
+        var alphaKey = new GradientAlphaKey[2];
+        alphaKey[0].alpha = 1.0f;
+        alphaKey[0].time = 0.0f;
+        alphaKey[1].alpha = 1.0f;
+        alphaKey[1].time = 1.0f;
+
+        gradient.SetKeys(colorKey, alphaKey);
+        gradient.mode = GradientMode.Fixed;
+
+        VFX_Absorb.SetGradient(Shader.PropertyToID("Colors"), gradient);
+        VFX_Wave.SetGradient(Shader.PropertyToID("Colors"), gradient);
+    }
+
     private void Update()
     {
-        if (enemyPool.ActiveItems.Count < MinNumberOfEnemies)
+        if (PlayerAlive && enemyPool.ActiveItems.Count < currentNumberOfEnemies)
         {
             SpawnEnemy();
         }
@@ -65,7 +106,7 @@ public class GameManager : MonoBehaviour
             var newColor = GetNextColor();
             currentColorIndex = newColor;
 
-            Player.SwapColor(currentColorIndex);
+            if (PlayerAlive) Player.SwapColor(currentColorIndex);
         }
 
         // TODO: Añadir dificultad creciente cuando el player aguanta mucho
@@ -129,29 +170,79 @@ public class GameManager : MonoBehaviour
             e.EnemyBehaviour.Init();
         });
 
-        // TODO: Efecto visual en el que se pasan los "poderes" del player a la nueva entidad
-        // mostrar mensaje en interfaz, etc...
+        (target as EnemyController).EnemyBehaviour.StopMovement();
 
-        yield return null;
+        _.PlayerCam.Follow = target.transform;
+        _.PlayerCam.LookAt = target.transform;
 
-        var newPlayer = Instantiate(_.PlayerPrefab);
+        _.GameCanvas.ShowGameOver();
+
+        VFX_Absorb.transform.position = target.transform.position;
+        VFX_Absorb.transform.parent = target.transform;
+        VFX_Absorb.gameObject.SetActive(true);
+        Invoke("ResetVFXAbsorb", 3f);
+
+        yield return new WaitUntil(() => reincarnating);
+
+        enemyPool.AllItems.ForEach(e =>
+        {
+            e.Die();
+        });
+
+        _.reincarnating = false;
+        _.score = 0;
+
         currentColorIndex = SO_Colors.GetColorIndex(target.CurrentColor);
-        newPlayer.Respawn();
-        newPlayer.SwapColor(currentColorIndex);
-        newPlayer.transform.position = target.transform.position;
-        _.PlayerCam.Follow = newPlayer.CameraFollowTarget;
-        _.PlayerCam.LookAt = newPlayer.CameraFollowTarget;
+        Player.Respawn();
+        Player.SwapColor(currentColorIndex);
+        Player.transform.position = target.transform.position;
 
-        _.player = newPlayer;
+        VFX_Wave.transform.position = Player.transform.position;
+        VFX_Wave.transform.parent = Player.transform;
+        VFX_Wave.gameObject.SetActive(true);
+        Invoke("ResetVFXWave", 3f);
+
+        _.PlayerCam.Follow = Player.CameraFollowTarget;
+        _.PlayerCam.LookAt = Player.CameraFollowTarget;
 
         nextColorChange = Time.time + TimeBetweenColorChange;
 
         target.Die();
+
+        ResetDifficulty();
     }
 
-    public static void ResetGame()
+    private void ResetVFXAbsorb()
     {
-        SceneManager.LoadScene(0);
+        VFX_Absorb.gameObject.SetActive(false);
+    }
+    private void ResetVFXWave()
+    {
+        VFX_Wave.gameObject.SetActive(false);
+    }
+
+    private void ResetDifficulty()
+    {
+        currentNumberOfEnemies = MinMaxNumberOfEnemies.Min;
+    }
+    public static void UpgradeDifficulty()
+    {
+        _.currentNumberOfEnemies = _.MinMaxNumberOfEnemies.Clamp(_.currentNumberOfEnemies + _.DifficultyUpgrade);
+        _.score++;
+    }
+
+    public static void Reincarnate()
+    {
+        if (PlayerAlive) return;
+
+        _.reincarnating = true;
+        _.GameCanvas.Reincarnate();
+    }
+    public static void QuitGame()
+    {
+        if (PlayerAlive) return;
+
+        Application.Quit();
     }
 
     private void OnDrawGizmos()

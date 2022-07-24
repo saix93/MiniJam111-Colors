@@ -65,4 +65,15 @@ public struct MinMaxInt
     public int Max;
 
     public float random { get { return Random.Range(Min, Max); } }
+
+    public MinMaxInt(int min, int max)
+    {
+        Min = min;
+        Max = max;
+    }
+
+    public int Clamp(int value)
+    {
+        return Mathf.Clamp(value, Min, Max);
+    }
 }
