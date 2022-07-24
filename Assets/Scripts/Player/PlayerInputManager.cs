@@ -10,6 +10,7 @@ public class PlayerInputManager : MonoBehaviour
     public string KBMControlScheme = "KBM";
 
     private PlayerController controller;
+    private bool shooting;
 
     public bool UsingGamepad => GameManager.CurrentControlScheme.Equals(GamepadControlScheme);
 
@@ -18,11 +19,16 @@ public class PlayerInputManager : MonoBehaviour
         controller = GetComponent<PlayerController>();
     }
 
+    private void Update()
+    {
+        if (shooting) controller.Shoot();
+    }
+
     public void OnControlsChanged(PlayerInput input)
     {
         if (input.currentControlScheme == null) return;
 
-        Debug.Log($"Input changed from {GameManager.CurrentControlScheme} to {input.currentControlScheme}");
+        // Debug.Log($"Input changed from {GameManager.CurrentControlScheme} to {input.currentControlScheme}");
         GameManager.CurrentControlScheme = input.currentControlScheme;
 
         if (GameManager.HasInstance) GameManager.MainCanvas.UpdateControls();
@@ -44,9 +50,9 @@ public class PlayerInputManager : MonoBehaviour
 
     public void Shoot(InputAction.CallbackContext context)
     {
-        var shoot = context.performed;
+        var shoot = context.ReadValue<float>();
 
-        if (shoot) controller.Shoot();
+        shooting = shoot > 0;
     }
 
     public void Reincarnate(InputAction.CallbackContext context)

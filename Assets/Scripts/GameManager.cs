@@ -188,6 +188,10 @@ public class GameManager : MonoBehaviour
         {
             e.Die();
         });
+        bulletPool.AllItems.ForEach(b =>
+        {
+            b.Hit();
+        });
 
         _.reincarnating = false;
         _.score = 0;
@@ -242,7 +246,11 @@ public class GameManager : MonoBehaviour
     {
         if (PlayerAlive) return;
 
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
         Application.Quit();
+#endif
     }
 
     private void OnDrawGizmos()

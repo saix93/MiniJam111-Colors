@@ -86,8 +86,9 @@ public class PlayerController : Entity
         var lookingDir = Crosshair.position - transform.position;
         var a = MinMaxCrosshairDistanceToCalcOffset.InverseLerp(lookingDir.magnitude);
         var b = MinMaxCameraOffset.Lerp(a);
+        var finalPos = transform.position + lookingDir.normalized * b;
 
-        CameraFollowTarget.position = transform.position + lookingDir.normalized * b;
+        CameraFollowTarget.position = finalPos;
     }
 
     public void UpdateMovement(Vector2 newMovement)

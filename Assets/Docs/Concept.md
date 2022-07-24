@@ -1,4 +1,4 @@
-RGB: Recursive Gunner Block
+RGB: Reincarnating Gunner Block
 Survival game where enemies appear by rounds.
 
 The player can change their own color with the keys 1..4 : Red, Green, Blue, Yellow

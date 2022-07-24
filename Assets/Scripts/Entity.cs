@@ -47,7 +47,7 @@ public class Entity : MonoBehaviour
 
     public virtual void Shoot()
     {
-        if (currentShootingCooldown >= Time.time) return;
+        if (currentShootingCooldown >= Time.time || !alive) return;
 
         var bullet = GameManager.GetBullet();
         bullet.transform.position = Weapon.position;
